@@ -6,6 +6,7 @@ import morgan from 'morgan';
 const app =  express();
 import connectDb from './src/config/db.js'
 import authRouter  from './src/routes/auth.routes.js'
+import recipeRouter  from './src/routes/recipe.routes.js'
 import cookieParser from 'cookie-parser';
 import redis from './src/utils/redis.js';
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 
 app.use('/api/auth/',authRouter)
+app.use('/api/recipes/',recipeRouter)
 
 // Error handling middleware
 import { errorHandler } from './src/middlewares/errorHandler.js';

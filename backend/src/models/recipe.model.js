@@ -7,8 +7,11 @@ const recipeSchema = new mongoose.Schema({
     required: true
   },
   title: { type: String, required: true, trim: true },
+  mainIngredients: [{ type: String, required: true }],
   ingredients: [{ type: String, required: true }],
   instructions: [{ type: String, required: true }],
+  cuisine: { type: String, default: "General" },
+  preferences: { type: [String], default: [] },
   source: { type: String, default: "gemini" },
   originalQuery: { type: String}
 }, { timestamps: true });

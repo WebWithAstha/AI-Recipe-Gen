@@ -1,18 +1,33 @@
 // geminiService.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = 'AIzaSyAdUG09AFlI_KuVcPXZ9TLCeB74mLvBHzk';
+// const apiKey = process.env.GEMINI_API_KEY;
 const genai = new GoogleGenerativeAI(apiKey);
 
 export const generateRecipe = async (ingredients, preferences, cuisineType) => {
   try {
     const model = genai.getGenerativeModel({ model: "gemini-2.0-flash" });
-    const prompt = `
+    let prompt = `
         Generate a recipe using these ingredients: ${ingredients.join(", ")}.
-        Consider these preferences: ${preferences}.
         Cuisine type: ${cuisineType}.
-        Return a JSON object: { "title": "...", "ingredients": ["...", "..."], "instructions": ["...", "..."] }.
-      `;
+    `;
+
+    if (preferences && preferences.trim() !== "") {
+      prompt += ` Consider these preferences: ${preferences}.`;
+    }
+
+    prompt += `
+        Return a JSON object: { 
+          "title": "...", 
+          "mainIngredients": ${JSON.stringify(ingredients)}, 
+          "ingredients": ["...", "..."], 
+          "instructions": ["...", "..."], 
+          "cuisine": "${cuisineType}",
+          "preferences": ${JSON.stringify(preferences ? preferences : [])}
+        }.`;
+
+
 
     const response = await model.generateContent(prompt);
     let result = await response.response.text();

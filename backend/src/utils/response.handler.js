@@ -20,8 +20,8 @@ class ResponseHandler {
     err,
   ) {
     if (
-      err.name == "MongoServerError" &&
-      err.message.includes("E11000 duplicate key error")
+      err?.name == "MongoServerError" &&
+      err?.message.includes("E11000 duplicate key error")
     ) {
       message = "User with this email already exists";
     }

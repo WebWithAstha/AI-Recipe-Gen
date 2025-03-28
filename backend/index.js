@@ -7,9 +7,13 @@ const app =  express();
 import connectDb from './src/config/db.js'
 import authRouter  from './src/routes/auth.routes.js'
 import cookieParser from 'cookie-parser';
+import redis from './src/utils/redis.js';
 
 // connecting to the database
 connectDb();
+redis.on("ready", () => console.log("Redis connected!"));
+
+
 app.use(morgan('dev')) // logger h bhai
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));

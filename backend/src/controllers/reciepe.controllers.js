@@ -3,6 +3,7 @@ import Recipe from "../models/recipe.model.js";
 import { generateRecipe } from "../services/gemini.service.js";
 import RecipeCacheService from "../services/recipeCache.service.js";
 import ResponseHandler from "../utils/response.handler.js";
+import { validationResult } from "express-validator";
 
 export const generateController = catchAsyncErrors(async (req, res, next) => {
   const { ingredients, preferences, cuisineType } = req.body;
@@ -28,6 +29,9 @@ export const generateController = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const saveRecipeController = catchAsyncErrors(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+        return ResponseHandler.error(404,{errors: errors.array()}).send(res);
   const {
     title,
     ingredients,

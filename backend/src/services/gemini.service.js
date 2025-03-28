@@ -13,8 +13,8 @@ export const generateRecipe = async (ingredients, preferences, cuisineType) => {
         Cuisine type: ${cuisineType}.
     `;
 
-    if (preferences && preferences.trim() !== "") {
-      prompt += ` Consider these preferences: ${preferences}.`;
+    if (preferences && preferences.length > 0) {
+        prompt += ` Consider these preferences: ${preferences.join(", ")}.`;
     }
 
     prompt += `

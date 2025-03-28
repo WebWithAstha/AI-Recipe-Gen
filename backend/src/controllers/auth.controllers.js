@@ -2,11 +2,13 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import User from "../models/user.model.js";
 import UserCacheService from "../services/userCache.service.js";
 import ResponseHandler from "../utils/response.handler.js";
+import { validationResult } from "express-validator";
 
 export const registerController = catchAsyncErrors(async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty())
+    return ResponseHandler.error(404, { errors: errors.array() }).send(res);
   const { name, email, password } = req.body;
-  if (!name || !email || !password)
-    return ResponseHandler.error(404, "Missing credentials");
   const user = await new User(req.body).save();
   await UserCacheService.setUser(user);
   const token = user.generateAndSaveToken(res);
@@ -47,11 +49,11 @@ export const logoutController = catchAsyncErrors(async (req, res, next) => {
 export const currentUserController = catchAsyncErrors(
   async (req, res, next) => {
     let user = await UserCacheService.getUserById(req.user.id);
-    console.log("fetched user from cache", user)
+    console.log("fetched user from cache", user);
     if (!user) {
       user = await User.findById(req.user.id);
-      console.log(user)
-      if (!user) return ResponseHandler.error(404,"You need to login")
+      console.log(user);
+      if (!user) return ResponseHandler.error(404, "You need to login");
       await UserCacheService.setUser(user);
     }
     return ResponseHandler.success(user, `Welcome ${user.name}`).send(res);

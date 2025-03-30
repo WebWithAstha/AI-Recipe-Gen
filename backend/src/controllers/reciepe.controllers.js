@@ -15,6 +15,7 @@ export const generateController = catchAsyncErrors(async (req, res, next) => {
   if (cachedRecipe) {
     return ResponseHandler.success(cachedRecipe).send(res);
   }
+  console.log("generating fresh recipe")
   const recipe = await generateRecipe(ingredients, preferences, cuisineType);
 
   if (recipe.error) {
@@ -75,6 +76,7 @@ export const getAllSavedRecipeController = catchAsyncErrors(async (req, res, nex
     ResponseHandler.success(savedRecipes).send(res);
   
 })
+
 export const getSavedRecipeController = catchAsyncErrors(async (req, res, next) => {
     const savedRecipe = await Recipe.findById(req.params.id);
     if (!savedRecipe) {
@@ -83,3 +85,12 @@ export const getSavedRecipeController = catchAsyncErrors(async (req, res, next) 
     ResponseHandler.success(savedRecipe).send(res);
   
 })
+export const unsaveRecipeController = catchAsyncErrors(async (req, res, next) => {
+    const recipeId = req.params.id;
+    const userId = req.user.id;
+    const recipe = await Recipe.findOneAndDelete({ _id: recipeId, userId });
+    if (!recipe) {
+      return ResponseHandler.error(404, "Recipe not found or not owned by user").send(res);
+    }
+    ResponseHandler.success({}, "Recipe unsaved successfully").send(res);
+  });

@@ -49,7 +49,7 @@ export const logoutController = catchAsyncErrors(async (req, res, next) => {
 export const currentUserController = catchAsyncErrors(
   async (req, res, next) => {
     let user = await UserCacheService.getUserById(req.user.id);
-    console.log("fetched user from cache", user);
+    console.log("fetched user from cache", user?.name);
     if (!user) {
       user = await User.findById(req.user.id);
       console.log(user);

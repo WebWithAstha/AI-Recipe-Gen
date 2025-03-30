@@ -10,6 +10,7 @@ import recipeRouter  from './src/routes/recipe.routes.js'
 import cookieParser from 'cookie-parser';
 import redis from './src/utils/redis.js';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit'
 
 // connecting to the database
 connectDb();
@@ -26,6 +27,15 @@ app.use(morgan('dev')) // logger h bhai
 app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+// rate limiting
+const rateLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 10,
+    message: "Rate limit exceeded! Please try again in a minute.",
+    headers: true,
+});
+app.use(rateLimiter);
 
 
 app.use('/api/auth/',authRouter)

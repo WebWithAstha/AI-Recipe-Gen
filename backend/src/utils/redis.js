@@ -1,16 +1,18 @@
 import Redis from "ioredis";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const redis = new Redis({
-  host: "redis-18611.c90.us-east-1-3.ec2.redns.redis-cloud.com",
-  port: "18611",
-  password: "6KtDeABy7Q1VjjRFqMQFzJrQlWWMsn63",
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
 });
 
-redis.on("err", (err) => {
-  console.log(err);
+redis.on("error", (err) => {
+  console.error("Redis error:", err);
 });
-redis.on("ready", () => {
-  console.log("Redis ready!");
+redis.on("connect", () => {
+  console.log("Redis connected!");
 });
 redis.on("close", () => {
   console.log("Redis connection closed!");

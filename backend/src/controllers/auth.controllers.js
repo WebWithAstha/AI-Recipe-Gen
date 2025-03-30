@@ -51,7 +51,6 @@ export const currentUserController = catchAsyncErrors(
     console.log("fetched user from cache", user?.name);
     if (!user) {
       user = await User.findById(req.user.id);
-      console.log(user);
       if (!user) return ResponseHandler.error(404, "You need to login");
       await UserCacheService.setUser(user);
     }

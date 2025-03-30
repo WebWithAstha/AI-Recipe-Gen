@@ -30,9 +30,9 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // rate limiting
 const rateLimiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 10,
-    message: "Rate limit exceeded! Please try again in a minute.",
+    windowMs: process.env.RATE_LIMIT_WINDOW_MS,
+    max: process.env.RATE_LIMIT_MAX,
+    message: process.env.RATE_LIMIT_MESSAGE,
     headers: true,
 });
 app.use(rateLimiter);

@@ -7,7 +7,6 @@ import { validationResult } from "express-validator";
 
 export const generateController = catchAsyncErrors(async (req, res, next) => {
   const errors = validationResult(req);
-  console.log("hello",errors)
   if (!errors.isEmpty())
     return ResponseHandler.error(404, { errors: errors.array() }).send(res);
   const { ingredients, preferences, cuisineType, regenerate } = req.body;

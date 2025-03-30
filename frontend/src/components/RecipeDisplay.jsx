@@ -51,7 +51,6 @@ const RecipeDisplay = ({ recipe }) => {
   //   img: "https://plus.unsplash.com/premium_photo-1701006579559-49cf5d1a0b7a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Added img field
   // };
 
-  console.log(recipe)
   const renderList = (list, className = "list-disc list-inside mb-4") => (
     <ul className={className}>
       {list.map((item, index) => (

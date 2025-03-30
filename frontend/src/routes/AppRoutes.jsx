@@ -22,7 +22,7 @@
     const navigate = useNavigate();
     useEffect(() => {
       if (!user) dispatch(loadUserAction());
-    }, [dispatch, user]);
+    }, [dispatch]);
     if (!user) {
       navigate("/auth");
       return null;

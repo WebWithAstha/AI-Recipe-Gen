@@ -28,12 +28,8 @@ export const registerUserAction = (userInfo,navigate) => async (dispatch, getSta
 
 export const loadUserAction = (navigate)=> async(dispatch,getState)=>{
     try {
-        console.log("atUserAction")
         const {data} =  await currentUser();
         dispatch(loadUser(data?.data))
-
-        console.log(data?.data)
-        
     } catch (error) {
         console.log(error)
         

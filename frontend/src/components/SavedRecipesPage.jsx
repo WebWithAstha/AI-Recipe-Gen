@@ -40,9 +40,6 @@ import Loading from "./partials/Loading.jsx";
 
 const RecipeCard = ({ recipe,index }) => {
 
-  console.log(recipe._id)
-  console.log(recipe)
-
   return (
     <div className="bg-neutral-100/[.2] relative rounded-xl max-h-[30rem] p-6 flex flex-col items-center shadow-lg">
       
@@ -82,7 +79,6 @@ const RecipeCard = ({ recipe,index }) => {
 
 const SavedRecipesPage = () => {
   const {recipes} = useSelector(store=>store.RecipeSlice)
-  console.log(recipes)
   const dispatch = useDispatch();
 
   useEffect(()=>{

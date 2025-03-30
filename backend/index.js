@@ -16,13 +16,18 @@ import rateLimit from 'express-rate-limit'
 connectDb();
 redis.on("ready", () => console.log("Redis connected!"));
 
-// const allowedOrigins = process.env.CORS_ORIGINS.split(",");
+const allowedOrigins = process.env.CORS_ORIGINS.split(",");
 
 app.use(cors({
-    origin:[process.env.CORS_ORIGIN2 ,process.env.CORS_ORIGIN1],
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
 }));
-
 
 app.use(morgan('dev')) // logger h bhai
 app.use(cookieParser());

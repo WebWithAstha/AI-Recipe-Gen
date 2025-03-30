@@ -19,14 +19,15 @@ export const loginController = catchAsyncErrors(async (req, res, next) => {
   if (!email || !password)
     return ResponseHandler.error(404, "Invalid email or password").send(res);
   let user = await UserCacheService.getUserByEmail(email);
+
   if (user) {
     console.log("User fetched from cache");
     user = new User(user); 
   } else {
     user = await User.findOne({ email: req.body.email });
-    await UserCacheService.setUser(user);
-  }
+    }
   if (!user) return ResponseHandler.error(404, "User not found").send(res);
+  await UserCacheService.setUser(user);
 
   const isValid = await user.comparePassword(req.body.password);
   if (!isValid) return ResponseHandler.error(401, "Wrong password").send(res);
@@ -51,6 +52,7 @@ export const currentUserController = catchAsyncErrors(
     console.log("fetched user from cache", user?.name);
     if (!user) {
       user = await User.findById(req.user.id);
+      console.log(user)
       if (!user) return ResponseHandler.error(404, "You need to login");
       await UserCacheService.setUser(user);
     }

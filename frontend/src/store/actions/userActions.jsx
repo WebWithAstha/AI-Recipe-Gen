@@ -8,10 +8,12 @@ export const loginUserAction = (credentials,navigate) => async (dispatch, getSta
         const { data } = await login(credentials);
         dispatch(loadUser(data?.data?.user))
         toast.success("Welcome Back!");
-        navigate('/')
+        navigate('/dashboard')
     } catch (error) {
         console.log(error?.response?.data)
-        toast.error("Login failed");
+        if(error?.response?.data.message==='User not found') toast.error("Sign up first!");
+        else 
+            toast.error("Login failed");
     }
 };
 
@@ -20,7 +22,7 @@ export const registerUserAction = (userInfo,navigate) => async (dispatch, getSta
         const { data } = await register(userInfo);
         dispatch(loadUser(data?.data?.user))
         toast.success("Let's go newbie!");
-        navigate('/')
+        navigate('/dashboard')
     } catch (error) {
         console.log(error?.response?.data)
         toast.error("Registration failed");

@@ -19,7 +19,7 @@ const Header = () => {
     <div className="fixed z-[99] w-full  left-0 top-0  flex backdrop-blur-sm justify-center">
       <header className=" w-full max-w-[1256px] px-6 py-3 text-white lg-[70vw] max-auto flex  justify-between items-center">
 
-          <NavLink to="/" >
+          <NavLink to="/dashboard" >
 
         <div className="flex gap-1 items-center">
           <img className="h-10 rounded-full" alt="Logo" src={logo} />
@@ -31,7 +31,7 @@ const Header = () => {
           </NavLink>
         <nav className="flex items-center gap-10">
           <NavLink
-            to="/"
+            to="/dashboard"
             className="text-white hover:text-sky-300"
             style={{ textDecoration: "none" }}
           >
@@ -45,7 +45,7 @@ const Header = () => {
             Saved Recipes
           </NavLink>
           <div>
-            {user ? (
+            {user &&
               <div className="flex gap-4">
                 <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-r from-amber-700 to-yellow-500 overflow-hidden">
                   {user.name.substring(0,1)}
@@ -57,15 +57,7 @@ const Header = () => {
                   <FiLogOut className="text-sm font-black"  /> 
                 </button>
               </div>
-            ) : (
-              <Link to="/auth">
-
-              <Btn
-                text="Login/Signup"
-                className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded"
-                />
-                </Link>
-            )}
+            }
           </div>
         </nav>
       </header>

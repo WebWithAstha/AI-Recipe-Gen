@@ -24,7 +24,7 @@
       if (!user) dispatch(loadUserAction());
     }, [dispatch]);
     if (!user) {
-      navigate("/auth");
+      navigate("/");
       return null;
     }
     return children;
@@ -34,7 +34,7 @@
     return (
         <Routes>
           <Route
-            path="/"
+            path="/dashboard"
             element={
               <ProtectedRoute>
                 <Header />
@@ -69,7 +69,7 @@
               </ProtectedRoute>
             }
           />
-          <Route path="/auth" element={
+          <Route path="/" element={
               <AuthPage/>
           } />
           <Route path="*" element={<NotFound />} />

@@ -16,11 +16,12 @@ import rateLimit from 'express-rate-limit'
 connectDb();
 redis.on("ready", () => console.log("Redis connected!"));
 
+// const allowedOrigins = process.env.CORS_ORIGINS.split(",");
 
 app.use(cors({
-    origin:[process.env.CORS_ORIGIN],
-    credentials:true
-}))
+    origin:[process.env.CORS_ORIGIN2 ,process.env.CORS_ORIGIN1],
+    credentials: true
+}));
 
 
 app.use(morgan('dev')) // logger h bhai

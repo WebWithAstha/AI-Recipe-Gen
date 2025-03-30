@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 import Btn from "./partials/Btn";
 import { FormField } from "./partials/FormField";
+import { useDispatch, useSelector } from "react-redux";
+import { generateAction } from "../store/actions/recipeActions";
 
-const RecipeGenerator = ({ recipe, setRecipe }) => {
+const RecipeGenerator = () => {
   const [formState, setFormState] = useState({
     ingredients: [],
     preferences: [],
-    cuisine: "",
-    loading: false,
+    cuisineType: "", // Changed from cuisine to cuisineType
   });
+  
+  const {isLoading} =  useSelector(store=> store.RecipeSlice)
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormState({ ...formState, loading: true });
-    setTimeout(() => {
-      setFormState({ ...formState, loading: false });
-    }, 1000);
+    dispatch(generateAction(formState));
+
   };
 
   return (
@@ -38,13 +41,13 @@ const RecipeGenerator = ({ recipe, setRecipe }) => {
           placeholder="Vegetarian, Keto, etc."
         />
         <FormField
-          id="cuisine"
+          id="cuisineType" // Changed from cuisine to cuisineType
           label="Cuisine Type"
-          value={formState.cuisine}
-          onChange={(e) => setFormState({ ...formState, cuisine: e.target.value })}
+          value={formState.cuisineType} // Changed from cuisine to cuisineType
+          onChange={(e) => setFormState({ ...formState, cuisineType: e.target.value })} // Changed from cuisine to cuisineType
           placeholder="Italian, Indian, Mexican..."
         />
-        <Btn text={formState.loading ? <LoadingIndicator /> : "Generate Recipe"} disabled={formState.loading} />
+        <Btn text={isLoading ? <LoadingIndicator /> : "Generate Recipe"} disabled={isLoading  } />
       </form>
     </div>
   );

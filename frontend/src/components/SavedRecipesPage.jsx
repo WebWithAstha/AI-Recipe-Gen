@@ -1,46 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Btn from "./partials/Btn";
 import { Link } from "react-router-dom";
 import SaveBtn from "./partials/SaveBtn";
+import { useDispatch, useSelector } from "react-redux";
+import { getSavedRecipesAction } from "../store/actions/recipeActions.jsx";
+import Loading from "./partials/Loading.jsx";
 
-const sampleRecipes = [
-  {
-    id: 1,
-    title: "Spaghetti Aglio e Olio",
-    ingredients: ["Spaghetti", "Garlic", "Olive Oil"],
-    cuisine: "Italian",
-    preferences: ["Vegetarian", "Quick Meal"],
-  },
-  {
-    id: 2,
-    title: "Chicken Tacos",
-    ingredients: ["Chicken", "Tortillas", "Salsa"],
-    cuisine: "Mexican",
-    preferences: ["Meat Lover", "Spicy"],
-  },
-  {
-    id: 3,
-    title: "Veggie Stir Fry",
-    ingredients: ["Broccoli", "Carrots", "Rice"],
-    cuisine: "Chinese",
-    preferences: ["Vegan", "Healthy"],
-  },
-  {
-    id: 4,
-    title: "Beef Burgers",
-    ingredients: ["Beef", "Buns", "Cheese"],
-    cuisine: "American",
-    preferences: ["Meat Lover", "Comfort Food"],
-  },
-];
+// const sampleRecipes = [
+//   {
+//     id: 1,
+//     title: "Spaghetti Aglio e Olio",
+//     ingredients: ["Spaghetti", "Garlic", "Olive Oil"],
+//     cuisine: "Italian",
+//     preferences: ["Vegetarian", "Quick Meal"],
+//   },
+//   {
+//     id: 2,
+//     title: "Chicken Tacos",
+//     ingredients: ["Chicken", "Tortillas", "Salsa"],
+//     cuisine: "Mexican",
+//     preferences: ["Meat Lover", "Spicy"],
+//   },
+//   {
+//     id: 3,
+//     title: "Veggie Stir Fry",
+//     ingredients: ["Broccoli", "Carrots", "Rice"],
+//     cuisine: "Chinese",
+//     preferences: ["Vegan", "Healthy"],
+//   },
+//   {
+//     id: 4,
+//     title: "Beef Burgers",
+//     ingredients: ["Beef", "Buns", "Cheese"],
+//     cuisine: "American",
+//     preferences: ["Meat Lover", "Comfort Food"],
+//   },
+// ];
 
-const RecipeCard = ({ recipe }) => {
+
+const RecipeCard = ({ recipe,index }) => {
+
+  console.log(recipe._id)
+  console.log(recipe)
+
   return (
     <div className="bg-neutral-100/[.2] relative rounded-xl max-h-[30rem] p-6 flex flex-col items-center shadow-lg">
       
       <div className="w-full bg-gradient-to-r from-purple-200/[.3] to-blue-300/[.3] rounded-xl overflow-hidden shrink-0 mb-2">
         <img
-          src={`https://picsum.photos/id/${recipe.id+80}/200/300`}
+          src={`https://picsum.photos/id/${index+101}/200/300`}
           alt={recipe.title}
           className="w-full h-40 object-cover"
         />
@@ -62,9 +70,9 @@ const RecipeCard = ({ recipe }) => {
       )}
 
       <div className="relative flex gap-2 items-center justify-self-end mt-auto">
-      <SaveBtn position={"relative"}/>
+      <SaveBtn recipe={recipe} position={"relative"}/>
 
-        <Link to={`/d/${recipe.id}`} className="inline-block">
+        <Link to={`/d/${recipe?._id}`} className="inline-block">
         <Btn text={"View"}/>
         </Link>
       </div>
@@ -73,16 +81,27 @@ const RecipeCard = ({ recipe }) => {
 };
 
 const SavedRecipesPage = () => {
+  const {recipes} = useSelector(store=>store.RecipeSlice)
+  console.log(recipes)
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    if(recipes?.length === 0) dispatch(getSavedRecipesAction())
+  },[dispatch])
+
+
   return (
+    recipes?.length > 0 ? 
     <div className="rounded-xl">
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xl p-10 bg-neutral-600/[0] text-white"
       >
-        {sampleRecipes.map((recipe, index) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
+         {recipes.map((recipe, index) => (
+          <RecipeCard key={recipe._id} recipe={recipe} index={index} />
         ))}
       </div>
     </div>
+    : <Loading/>
   );
 };
 

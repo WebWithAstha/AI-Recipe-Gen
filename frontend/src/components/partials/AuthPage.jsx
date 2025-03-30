@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { FormField } from "./FormField";
 import Btn from "./Btn";
 import logo from "../../assets/genie.png";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUserAction, registerUserAction } from "../../store/actions/userActions";
+import { useNavigate } from "react-router-dom";
 
 const AuthPage = () => {
   const [mode, setMode] = useState("login");
@@ -9,13 +12,17 @@ const AuthPage = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {user} = useSelector(store => store.UserSlice)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (mode === "login") {
-        // blah
+        dispatch(loginUserAction({email,password},navigate))
       } else {
-        // blah
+        dispatch(registerUserAction({name,email,password},navigate))
       }
     } catch (error) {
       console.log(error);
@@ -36,7 +43,7 @@ const AuthPage = () => {
           className=" h-full w-max  mx-auto"
         />
       </div>
-      <div className="flex flex-1 items-center flex-col gap-8 ">
+      <div className="flex flex-1 items-center lg:w-[30rem] flex-col gap-8 ">
         <div className="flex gap-2 items-center">
           <h1 className="text-3xl font-bold">
             {mode === "login"

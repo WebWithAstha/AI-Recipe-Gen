@@ -13,7 +13,8 @@ const recipeSchema = new mongoose.Schema({
   cuisine: { type: String, default: "General" },
   preferences: { type: [String], default: [] },
   source: { type: String, default: "gemini" },
-  originalQuery: { type: String}
+  originalQuery: { type: String},
+  imageUrl:String
 }, { timestamps: true });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);

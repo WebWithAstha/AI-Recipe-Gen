@@ -1,12 +1,13 @@
 import toast from "react-hot-toast";
 import { currentUser, login, logout, register } from "../../services/user.services.js";
 import { loadUser } from "../slices/UserSlice";
+import { loadrecipes } from "../slices/RecipeSlice.jsx";
 
 export const loginUserAction = (credentials,navigate) => async (dispatch, getState) => {
     try {
         const { data } = await login(credentials);
         dispatch(loadUser(data?.data?.user))
-        toast.success("Login successful");
+        toast.success("Welcome Back!");
         navigate('/')
     } catch (error) {
         console.log(error?.response?.data)
@@ -18,7 +19,7 @@ export const registerUserAction = (userInfo,navigate) => async (dispatch, getSta
     try {
         const { data } = await register(userInfo);
         dispatch(loadUser(data?.data?.user))
-        toast.success("Registration successful");
+        toast.success("Let's go newbie!");
         navigate('/')
     } catch (error) {
         console.log(error?.response?.data)
@@ -40,7 +41,8 @@ export const logoutUserAction = (navigate)=> async(dispatch,getState)=>{
     try {
         await logout();
         dispatch(loadUser(null))
-        toast.success("Logout successful");
+        dispatch(loadrecipes([]))
+        toast.success("Bye foodie!");
         navigate('/')
     } catch (error) {
         console.log(error)

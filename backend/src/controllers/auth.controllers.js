@@ -8,11 +8,10 @@ export const registerController = catchAsyncErrors(async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     return ResponseHandler.error(404, { errors: errors.array() }).send(res);
-  const { name, email, password } = req.body;
   const user = await new User(req.body).save();
   await UserCacheService.setUser(user);
   const token = user.generateAndSaveToken(res);
-  return ResponseHandler({ token, user }).send(res);
+  return ResponseHandler.success({ token, user }).send(res);
 });
 
 export const loginController = catchAsyncErrors(async (req, res, next) => {

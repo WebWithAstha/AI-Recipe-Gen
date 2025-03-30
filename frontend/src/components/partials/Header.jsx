@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <div className="fixed z-[99] w-full  left-0 top-0  flex backdrop-blur-sm justify-center">
-      <header className=" w-full max-w-[1256px]  p-4 px-16 flex  justify-between items-center">
+      <header className=" w-full max-w-[1256px] px-6 py-3 text-white lg-[70vw] max-auto flex  justify-between items-center">
 
           <NavLink to="/" >
 

@@ -2,9 +2,10 @@ import express from 'express';
 import { isAuthenticated } from '../middlewares/auth.js';
 import { generateController , saveRecipeController,getAllSavedRecipeController,getSavedRecipeController, unsaveRecipeController } from '../controllers/reciepe.controllers.js';
 import { validateRecipe } from '../middlewares/validateRecipe.js';
+import { validateRecipeInput } from '../middlewares/validatePrompt.js';
 const router =  express.Router();
 
-router.post('/generate',isAuthenticated,generateController)
+router.post('/generate',isAuthenticated,validateRecipeInput,generateController)
 router.post('/save',isAuthenticated,validateRecipe,saveRecipeController)
 router.post('/unsave/:id',isAuthenticated,unsaveRecipeController)
 router.post('/saved',isAuthenticated,getAllSavedRecipeController)

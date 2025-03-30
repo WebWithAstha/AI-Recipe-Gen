@@ -45,14 +45,14 @@ const RecipeCard = ({ recipe,index }) => {
       
       <div className="w-full bg-gradient-to-r from-purple-200/[.3] to-blue-300/[.3] rounded-xl overflow-hidden shrink-0 mb-2">
         <img
-          src={`https://picsum.photos/id/${index+101}/200/300`}
+          src={recipe.imageUrl}
           alt={recipe.title}
-          className="w-full h-40 object-cover"
+          className="w-full h-56 object-cover"
         />
       </div>
       <h2 className="text-2xl font-bold mb-1 text-center">{recipe.title.length > 25 ? `${recipe.title.substring(0, 40)}...` : recipe.title}</h2>
-      <p className="text-neutral-400 mb-2">Cuisine: <span className="text-yellow-500"> {recipe.cuisine.length > 10 ? `${recipe.cuisine.substring(0, 10)}...` : recipe.cuisine}</span></p>
-      {recipe.preferences.length > 0 && (
+      <p className="text-neutral-400 mb-6 ">Cuisine: <span className="text-yellow-500"> {recipe.cuisine.length > 10 ? `${recipe.cuisine.substring(0, 10)}...` : recipe.cuisine}</span></p>
+      {/* {recipe.preferences.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2 mb-2">
           <strong className="text-neutral-400 text-sm">Preferences:</strong>
           {recipe.preferences.slice(0, 3).map((preference, index) => (
@@ -64,10 +64,10 @@ const RecipeCard = ({ recipe,index }) => {
             </span>
           ))}
         </div>
-      )}
+      )} */}
 
       <div className="relative flex gap-2 items-center justify-self-end mt-auto">
-      <SaveBtn recipe={recipe} position={"relative"}/>
+      <SaveBtn recipe={recipe} status={true} position={"relative"}/>
 
         <Link to={`/d/${recipe?._id}`} className="inline-block">
         <Btn text={"View"}/>
@@ -87,11 +87,12 @@ const SavedRecipesPage = () => {
 
 
   return (
+
     recipes?.length > 0 ? 
-    <div className="rounded-xl">
+    <div className="rounded-xl mx-auto lg:w-[70vw] max-w-[1256px]">
       <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xl p-10 bg-neutral-600/[0] text-white"
-      >
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xl bg-neutral-600/[0] text-white"
+        >
          {recipes.map((recipe, index) => (
           <RecipeCard key={recipe._id} recipe={recipe} index={index} />
         ))}

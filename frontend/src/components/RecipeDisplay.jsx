@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Btn from "./partials/Btn";
-import { FaRegBookmark, FaRegSave } from "react-icons/fa";
+import { FaRegBookmark, FaRegSave,FaCircle, FaCircleNotch, FaDatabase, FaRedo } from "react-icons/fa"; // Added FaRedo icon for regenerate
 import { FaBookmark } from "react-icons/fa"; // Added FaBookmark icon
 import SaveBtn from "./partials/SaveBtn";
+import { images } from "../utils/images";
+import { generateAction ,loadRecipeAction} from "../store/actions/recipeActions.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import Loading from "./partials/Loading.jsx"
 
-const RecipeDisplay = ({ recipe }) => {
+const RecipeDisplay = ({regenerate, formState, recipe }) => {
   // recipe = {
   //   _id: "67e7062e81db42cd399e9afd",
   //   userId: "67e63aaec801e5e14cfa3e9c",
@@ -60,16 +65,44 @@ const RecipeDisplay = ({ recipe }) => {
       ))}
     </ul>
   );
+  
 
+  const dispatch =  useDispatch();
+  const handleRegen = ()=>{
+    dispatch(generateAction(formState,true));
+  }
+
+  const img = images[Math.floor(Math.random() * images.length)]
+  const {id} = useParams()
+
+  const {currentRecipe} = useSelector(store=>store.RecipeSlice)
+  if(!recipe) recipe = currentRecipe
+
+  useEffect(()=>{
+    if(!recipe) dispatch(loadRecipeAction(id))
+  },[])
 
 
   return (
-    <div className=" bg-neutral-600/[.5] text-white rounded-xl p-10 max-w-4xl mx-auto relative">
-      <SaveBtn recipe= {recipe} status = {false}/>
+    recipe ?
+    
+    <div className="w-full relative">
+      <SaveBtn img={img} position="relative" recipe= {recipe} />
+      {regenerate && 
+      <div onClick={handleRegen} className="absolute top-0 right-0 z-99 group text-sm">
+        <button className="p-2 bg-gradient-to-r uppercase from-blue-400 to-green-400 hover:from-blue-300 hover:to-green-300 transition duration-300 ease-in-out backdrop-blur-2xl cursor-pointer text-white font-bold text-xs py-3.5 px-3.5 rounded-full">
+          <FaRedo /> {/* Changed icon to FaRedo for regenerate */}
+        </button>
+        <span className="absolute left-1/2 -translate-x-[0%] top-full -translate-y-[60%] pointer-events-none z-[99] bg-neutral-700/[.7] group-hover:opacity-100 opacity-0 px-2 text-xs rounded pb-1 transition-opacity duration-300">
+          Regenerate
+        </span>
+      </div>
+      }
+      <button></button>
             <h2 className="text-3xl font-bold mb-6 w-[90%]">{recipe.title}</h2>
       <div className="mb-6 h-80  bg-gradient-to-r from-purple-200/[.5] to-blue-300/[.5] rounded-lg relative overflow-hidden">
         <img
-          src={recipe?.img || "https://plus.unsplash.com/premium_photo-1701006579559-49cf5d1a0b7a?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+          src={img}
           alt="Recipe Image"
           className="w-full h-full object-cover rounded-lg shadow-md"
         />
@@ -103,6 +136,8 @@ const RecipeDisplay = ({ recipe }) => {
         </ol>
       </div>
     </div>
+      : <Loading/>
+
   );
 };
 

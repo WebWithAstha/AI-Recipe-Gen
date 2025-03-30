@@ -4,12 +4,18 @@ const initialState = {
     recipes : [],
     aiRecipe : null,
     isLoading : false,
+    currentRecipe : null,
+
 }
 
 const recipeslice =  createSlice({
     name:'recipes',
     initialState,
     reducers: {
+        setCurrentRecipe : (state,action)=>{
+            state.currentRecipe = action.payload;
+            state.isLoading = false;
+        },
         loadrecipes : (state,action) => {
             state.recipes = action.payload;
             state.isLoading = false;
@@ -28,5 +34,5 @@ const recipeslice =  createSlice({
     }
 })
 
-export const {loadrecipes,saveRecipe, setAiRecipe, loading} = recipeslice.actions;
+export const {setCurrentRecipe, loadrecipes,saveRecipe, setAiRecipe, loading} = recipeslice.actions;
 export default recipeslice.reducer;

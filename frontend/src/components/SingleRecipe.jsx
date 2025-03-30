@@ -8,8 +8,9 @@ const SingleRecipe = () => {
   const {id} = useParams();
   const {recipes} = useSelector(store=>store.RecipeSlice);
   const recipe = recipes.find(recipe => recipe._id === id);
+  
   return (
-    <div className="">
+    <div className="max-w-[1256px] text-white lg:w-[70vw] mx-auto ">
         <RecipeDisplay recipe={recipe}/>
     </div>
   )

@@ -1,29 +1,47 @@
 import RecipeGenerator from "../components/RecipeGenerator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RecipeDisplay from "./RecipeDisplay.jsx";
 import heroImage from "../assets/genie.png"; // Importing the image from the assets folder
 import { useSelector } from "react-redux";
 
 function Home() {
   const {aiRecipe} = useSelector(store=>store.RecipeSlice);
-  console.log("generated recipe",aiRecipe)
+
+  const [formState, setFormState] = useState({
+    ingredients: [],
+    preferences: [],
+    cuisineType: "general", 
+  });
+
+  useEffect(() => {
+    if (aiRecipe) {
+      window.scrollTo({
+        top: window.innerHeight * 0.7,
+        behavior: 'smooth'
+      });
+    }
+  }, [aiRecipe]);
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <div className="max-w-[1256px]  h-max rounded-2xl bg-neutral-600/[.6] text-white">
-        <div className="flex md:flex-row flex-col md:gap-10 p-10">
+    <div className="flex  items-center justify-center flex-col">
+      <div className="max-w-[1256px] w-full lg:w-[70vw]  h-max rounded-2xl  text-white">
+        <div className="flex rounded-2xl py-6 bg-neutral-600/[.6] md:flex-row flex-col ">
           <RenderHeroSection />
           <div className="w-[.02rem] opacity-30 rounded-full bg-white"></div>
-          <RenderRecipeGenerator />
+          <RenderRecipeGenerator formState={formState} setFormState={setFormState} />
         </div>
-        {aiRecipe && <RecipeDisplay recipe={aiRecipe} />}
+        {aiRecipe && <div className="border-t-0 mt-2 bg-neutral-600/[.6] rounded-2xl px-6 py-6">
+
+        <RecipeDisplay formState={formState} setFormState={setFormState} regenerate={true} recipe={aiRecipe} />
+        </div> 
+        }
       </div>
     </div>
   );
 }
 
 const RenderHeroSection = () => (
-  <section className="text-center  relative md:w-[15rem] lg:w-[25rem] z-[0] overflow-hidden md:pt-10 md:border-none border-b pb-8 md:rounded-lg">
+  <section className="text-center  relative px-10 z-[0] overflow-hidden  md:border-none border-b pb-8 md:rounded-lg">
     <img
       className="md:h-[70%] h-20 md:left-1/2 md:-translate-x-1/2 md:absolute w-max z-[-1] bottom-8  object-contain opacity-100 mx-auto "
       src={heroImage} 
@@ -35,9 +53,9 @@ const RenderHeroSection = () => (
   </section>
 );
 
-const RenderRecipeGenerator = () => (
-  <div className="lg:w-[30rem]">
-    <RecipeGenerator />
+const RenderRecipeGenerator = ({formState,setFormState}) => (
+  <div className=" flex-1 flex items-center justify-center ">
+    <RecipeGenerator setFormState={setFormState} formState={formState} />
   </div>
 );
 

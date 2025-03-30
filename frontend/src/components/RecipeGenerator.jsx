@@ -3,13 +3,10 @@ import Btn from "./partials/Btn";
 import { FormField } from "./partials/FormField";
 import { useDispatch, useSelector } from "react-redux";
 import { generateAction } from "../store/actions/recipeActions";
+import toast from "react-hot-toast";
 
-const RecipeGenerator = () => {
-  const [formState, setFormState] = useState({
-    ingredients: [],
-    preferences: [],
-    cuisineType: "", // Changed from cuisine to cuisineType
-  });
+const RecipeGenerator = ({formState,setFormState}) => {
+ 
   
   const {isLoading} =  useSelector(store=> store.RecipeSlice)
 
@@ -17,13 +14,19 @@ const RecipeGenerator = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(generateAction(formState));
-
+    if (formState.cuisineType === "") {
+      setFormState({ ...formState, cuisineType: "general" });
+    }
+    if (formState.ingredients.length > 0) {
+      dispatch(generateAction(formState,false));
+    } else {
+     toast.error("No ingredients? No recipe");
+    }
   };
 
   return (
-    <div className="w-full mx-auto px-8 pb-4 py-6 rounded-2xl">
-      <h2 className="text-center w-[70%] mx-auto text-lg tracking-wide md:text-3xl font-bold text-neutral-200 mb-6">Discover Your Next Favorite Dish</h2>
+    <div className="w-full mx-auto px-6  rounded-2xl">
+      <h2 className="text-center w-[70%] md:mt-0 mt-4 mx-auto text-lg tracking-wide md:text-3xl font-bold text-neutral-200 mb-6">Discover Your Next Favorite Dish</h2>
       <form onSubmit={handleSubmit} className="space-y-5 flex items-center flex-col">
         <FormField
           id="ingredients"
@@ -32,6 +35,7 @@ const RecipeGenerator = () => {
           onChange={(e) => setFormState({ ...formState, ingredients: e.target.value.split(",").map((item) => item.trim()) })}
           placeholder="Enter ingredients (comma-separated)"
           type="textarea"
+          required={true}
         />
         <FormField
           id="preferences"
@@ -46,6 +50,8 @@ const RecipeGenerator = () => {
           value={formState.cuisineType} // Changed from cuisine to cuisineType
           onChange={(e) => setFormState({ ...formState, cuisineType: e.target.value })} // Changed from cuisine to cuisineType
           placeholder="Italian, Indian, Mexican..."
+          required={true}
+
         />
         <Btn text={isLoading ? <LoadingIndicator /> : "Generate Recipe"} disabled={isLoading  } />
       </form>

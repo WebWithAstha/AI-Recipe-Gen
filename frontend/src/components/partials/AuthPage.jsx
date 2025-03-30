@@ -14,7 +14,6 @@ const AuthPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {user} = useSelector(store => store.UserSlice)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +61,8 @@ const AuthPage = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name to join the culinary journey!"
+              type="text"
+              required={true}
             />
           )}
           <FormField
@@ -70,6 +71,8 @@ const AuthPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email to get cooking!"
+            type="email"
+            required={true}
           />
           <FormField
             id="password"
@@ -77,6 +80,8 @@ const AuthPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Choose a password that's the icing on the cake!"
+            type="password"
+            required={true}
           />
           <Btn
             text={mode === "login" ? "Sign In to Savor" : "Sign Up for a Taste"}

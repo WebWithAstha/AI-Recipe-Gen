@@ -1,6 +1,6 @@
 
-import env from 'dotenv';
-env.config();
+import dontenv from 'dotenv';
+dontenv.config();
 import express from 'express';
 import morgan from 'morgan';
 const app =  express();
@@ -9,10 +9,17 @@ import authRouter  from './src/routes/auth.routes.js'
 import recipeRouter  from './src/routes/recipe.routes.js'
 import cookieParser from 'cookie-parser';
 import redis from './src/utils/redis.js';
+import cors from 'cors';
 
 // connecting to the database
 connectDb();
 redis.on("ready", () => console.log("Redis connected!"));
+
+
+app.use(cors({
+    origin:[process.env.CORS_ORIGIN],
+    credentials:true
+}))
 
 
 app.use(morgan('dev')) // logger h bhai

@@ -1,9 +1,13 @@
-import React from 'react'
+import Layout from "./components/Layout.jsx";
+import AppRoutes from "./routes/AppRoutes.jsx";
 
-const App = () => {
+
+function App() {
   return (
-    <div className='bg-red-200'>App</div>
-  )
+      <Layout>
+        <AppRoutes/>
+      </Layout>
+  );
 }
 
-export default App
+export default App;

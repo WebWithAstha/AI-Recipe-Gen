@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
           <img key={index} className={`${classNames[index]} opacity-60 blur-xs`} src={src} alt="" />
         ))}
       </div>
-      <div className="flex max-w-[1256px] items-center justify-center pt-16 flex-col min-h-screen">
+      <div className="flex max-w-[1256px] w-full items-center justify-center md:pt-16 pt-10 flex-col min-h-screen">
         <main className="flex-grow w-full p-6  max-w-[1256px]">{children}</main>
       </div>
     </div>

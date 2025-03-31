@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { currentUser, login, logout, register } from "../../services/user.services.js";
-import { loadUser } from "../slices/UserSlice";
+import { loading, loadUser } from "../slices/UserSlice";
 import { loadrecipes } from "../slices/RecipeSlice.jsx";
 
 export const loginUserAction = (credentials,navigate) => async (dispatch, getState) => {
@@ -12,6 +12,10 @@ export const loginUserAction = (credentials,navigate) => async (dispatch, getSta
     } catch (error) {
         console.log(error?.response?.data)
         if(error?.response?.data.message==='User not found') toast.error("Sign up first!");
+        else if(error?.response?.data.message== 'Unauthorized: No token provided'){
+            navigate('/')
+            toast.error("Login failed"); 
+        }
         else 
             toast.error("Login failed");
     }
@@ -28,17 +32,18 @@ export const registerUserAction = (userInfo,navigate) => async (dispatch, getSta
         toast.error("Registration failed");
     }
 };
-
 export const loadUserAction = (navigate)=> async(dispatch,getState)=>{
     try {
+        dispatch(loading(true));
         const {data} =  await currentUser();
         dispatch(loadUser(data?.data))
     } catch (error) {
-        console.log(error)
-        
+        if(error?.response?.data.message === 'Unauthorized: No token provided'){
+            navigate('/')
+            toast.error("Login failed"); 
+        } 
     }
 }
-
 export const logoutUserAction = (navigate)=> async(dispatch,getState)=>{
     try {
         await logout();

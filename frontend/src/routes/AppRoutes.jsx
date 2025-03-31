@@ -15,14 +15,19 @@
   import { useDispatch, useSelector } from "react-redux";
   import { loadUserAction } from "../store/actions/userActions.jsx";
   import Header from "../components/partials/Header.jsx";
+import Loading from "../components/partials/Loading.jsx";
 
   const ProtectedRoute = ({ children }) => {
-    const { user } = useSelector((store) => store.UserSlice);
+    const { user,isLoading } = useSelector((store) => store.UserSlice);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     useEffect(() => {
-      if (!user) dispatch(loadUserAction());
-    }, [dispatch]);
+      if (!user) dispatch(loadUserAction(navigate));
+    }, [dispatch,user]);
+    
+    if (isLoading) {
+      return <Loading />; // Show Loading component while fetching user data
+    }
     if (!user) {
       navigate("/");
       return null;

@@ -35,9 +35,10 @@ userSchema.methods.generateAndSaveToken = function (res) {
         res.cookie("token", token, {
           // httpOnly: true,
           // secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-          // sameSite: "strict", // Protects against CSRF attacks
+          sameSite: "Lax", // More flexible for local dev
           maxAge:  24 * 60 * 60 * 1000,
         });
+        console.log("cookie set")
         return token;
         
     } catch (error) {

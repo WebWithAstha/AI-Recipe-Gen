@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import Btn from "./partials/Btn";
-import { FaRegBookmark, FaRegSave,FaCircle, FaCircleNotch, FaDatabase, FaRedo } from "react-icons/fa"; // Added FaRedo icon for regenerate
-import { FaBookmark } from "react-icons/fa"; // Added FaBookmark icon
+import { FaRedo } from "react-icons/fa"; // Added FaRedo icon for regenerate
 import SaveBtn from "./partials/SaveBtn";
 import { images } from "../utils/images";
 import { generateAction ,loadRecipeAction} from "../store/actions/recipeActions.jsx";
@@ -102,7 +100,7 @@ const RecipeDisplay = ({regenerate, formState, recipe }) => {
             <h2 className="text-3xl font-bold mb-6 w-[90%]">{recipe.title}</h2>
       <div className="mb-6 h-80  bg-gradient-to-r from-purple-200/[.5] to-blue-300/[.5] rounded-lg relative overflow-hidden">
         <img
-          src={img}
+          src={`https://image.pollinations.ai/prompt/${recipe.title}`}
           alt="Recipe Image"
           className="w-full h-full object-cover rounded-lg shadow-md"
         />

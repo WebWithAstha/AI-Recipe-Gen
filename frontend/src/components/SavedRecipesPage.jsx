@@ -45,7 +45,7 @@ const RecipeCard = ({ recipe,index }) => {
       
       <div className="w-full bg-gradient-to-r from-purple-200/[.3] to-blue-300/[.3] rounded-xl overflow-hidden shrink-0 mb-2">
         <img
-          src={recipe.imageUrl}
+          src={`https://image.pollinations.ai/prompt/${recipe.title}`}
           alt={recipe.title}
           className="w-full h-56 object-cover"
         />

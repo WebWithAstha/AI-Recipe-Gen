@@ -11,15 +11,28 @@ import cookieParser from 'cookie-parser';
 import redis from './src/utils/redis.js';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit'
+import helmet from 'helmet';
 
 // connecting to the database
 connectDb();
 redis.on("ready", () => console.log("Redis connected!"));
 
+// helmet setup
+app.use(
+    helmet({
+      contentSecurityPolicy: false, // Disable CSP if not needed
+      frameguard: { action: 'deny' }, // Prevent clickjacking
+      hidePoweredBy: true, // Hide "X-Powered-By: Express"
+      xssFilter: true, // Protect from XSS attacks
+      noSniff: true, // Prevent MIME-type sniffing
+    })
+  );
+
 const allowedOrigins = process.env.CORS_ORIGINS.split(",");
 
 app.use(cors({
     origin: function (origin, callback) {
+        console.log(origin)
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {

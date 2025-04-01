@@ -24,7 +24,7 @@ export const loginController = catchAsyncErrors(async (req, res, next) => {
     console.log("User fetched from cache");
     user = new User(user); 
   } else {
-    user = await User.findOne({ email: req.body.email });
+   user = await User.findOne({ email: req.body.email }).select("+password");
     }
   if (!user) return ResponseHandler.error(404, "User not found").send(res);
   await UserCacheService.setUser(user);

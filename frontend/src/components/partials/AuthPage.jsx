@@ -18,10 +18,6 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    if(isLoading){
-      console.log("waiting for login")
-      return
-    }
     e.preventDefault();
     try {
       if (mode === "login") {

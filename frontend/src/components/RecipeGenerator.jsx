@@ -15,13 +15,22 @@ const RecipeGenerator = ({formState,setFormState}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formState.cuisineType === "") {
-      setFormState({ ...formState, cuisineType: "general" });
-    }
-    if (formState.ingredients.length > 0) {
-      dispatch(generateAction(formState,false));
+
+    const updatedFormState = {
+      ...formState,
+      cuisineType: formState.cuisineType || "general",
+      ingredients: formState.ingredients
+        ? formState.ingredients.split(",").map((item) => item.trim())
+        : [],
+      preferences: formState.preferences
+        ? formState.preferences.split(",").map((item) => item.trim())
+        : [],
+    };
+
+    if (updatedFormState.ingredients.length > 0) {
+      dispatch(generateAction(updatedFormState, false));
     } else {
-     toast.error("No ingredients? No recipe");
+      toast.error("No ingredients? No recipe");
     }
   };
 
@@ -32,8 +41,8 @@ const RecipeGenerator = ({formState,setFormState}) => {
         <FormField
           id="ingredients"
           label="Ingredients"
-          value={formState.ingredients.join(", ")}
-          onChange={(e) => setFormState({ ...formState, ingredients: e.target.value.split(",").map((item) => item.trim()) })}
+          value={formState.ingredients}
+          onChange={(e) => setFormState({ ...formState, ingredients: e.target.value })}
           placeholder="Enter ingredients (comma-separated)"
           type="textarea"
           required={true}
@@ -41,15 +50,15 @@ const RecipeGenerator = ({formState,setFormState}) => {
         <FormField
           id="preferences"
           label="Dietary Preferences"
-          value={formState.preferences.join(", ")}
-          onChange={(e) => setFormState({ ...formState, preferences: e.target.value.split(",").map((item) => item.trim()) })}
+          value={formState.preferences}
+          onChange={(e) => setFormState({ ...formState, preferences: e.target.value })}
           placeholder="Vegetarian, Keto, etc."
         />
         <FormField
-          id="cuisineType" // Changed from cuisine to cuisineType
+          id="cuisineType" 
           label="Cuisine Type"
-          value={formState.cuisineType} // Changed from cuisine to cuisineType
-          onChange={(e) => setFormState({ ...formState, cuisineType: e.target.value })} // Changed from cuisine to cuisineType
+          value={formState.cuisineType} 
+          onChange={(e) => setFormState({ ...formState, cuisineType: e.target.value })} 
           placeholder="Italian, Indian, Mexican..."
           required={true}
 

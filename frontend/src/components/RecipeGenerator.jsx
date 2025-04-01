@@ -19,13 +19,11 @@ const RecipeGenerator = ({formState,setFormState}) => {
     const updatedFormState = {
       ...formState,
       cuisineType: formState.cuisineType || "general",
-      ingredients: formState.ingredients
-        ? formState.ingredients.split(",").map((item) => item.trim())
-        : [],
-      preferences: formState.preferences
-        ? formState.preferences.split(",").map((item) => item.trim())
-        : [],
-    };
+      ingredients: Array.isArray(formState.ingredients) ? formState.ingredients : formState.ingredients?.trim()
+      ? formState.ingredients.split(",").map((item) => item.trim()) : [],
+      preferences: Array.isArray(formState.preferences) ? formState.preferences : formState.preferences?.trim()
+      ? formState.preferences.split(",").map((item) => item.trim()) : [],
+    }
 
     if (updatedFormState.ingredients.length > 0) {
       dispatch(generateAction(updatedFormState, false));

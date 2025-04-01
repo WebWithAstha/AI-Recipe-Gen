@@ -44,7 +44,6 @@ export const generateRecipe = async (ingredients, preferences, cuisineType="gene
 
     // Remove markdown formatting (triple backticks)
     result = result.replace(/```json|```/g, "").trim();
-    console.log(result)
     try {
       return JSON.parse(result);
     } catch (jsonError) {

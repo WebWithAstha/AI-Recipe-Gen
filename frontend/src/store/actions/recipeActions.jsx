@@ -26,8 +26,6 @@ export const generateAction = (requirements,regenerate) => async (dispatch, getS
     setTimeout(() => dispatch(loading(false)), 1000);
     console.log(error);
 
-    console.log(error?.response?.data?.message.includes("Invalid input"));
-
     if (error?.response?.data?.message.includes("Invalid input")) {
       toast.error("Check ingredients before mixing!");
     } else {

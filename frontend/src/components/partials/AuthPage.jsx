@@ -5,17 +5,23 @@ import logo from "../../assets/genie.png";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction, registerUserAction } from "../../store/actions/userActions";
 import { useNavigate } from "react-router-dom";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 const AuthPage = () => {
   const [mode, setMode] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const { isLoading} = useSelector(store=> store.UserSlice)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    if(isLoading){
+      console.log("waiting for login")
+      return
+    }
     e.preventDefault();
     try {
       if (mode === "login") {
@@ -34,7 +40,6 @@ const AuthPage = () => {
 
   return (
     <div className="fixed top-0 z-[99] flex items-center justify-center left-0 w-full h-screen">
-
     <div className="w-full lg:w-[80vw] h-full items-center flex justify-center">
     <div className=" sm:w-max w-full h-full sm:h-max flex md:flex-row flex-col items-center justify-between  gap-8 p-10 sm:rounded-2xl bg-neutral-600/[.6] text-white">
       <div className="flex md:w-[15rem] lg:w-[18rem] w-32 justify-center rounded-full overflow-hidden">
@@ -85,8 +90,8 @@ const AuthPage = () => {
             type="password"
             required={true}
           />
-          <Btn
-            text={mode === "login" ? "Sign In to Savor" : "Sign Up for a Taste"}
+          <Btn disabled = {isLoading}
+            text={isLoading ? <LoadingIndicator/> :mode === "login" ? "Sign In to Savor" : "Sign Up for a Taste"}
           />
         </form>
         <p className=" text-md">
@@ -103,5 +108,7 @@ const AuthPage = () => {
     </div>
   );
 };
+
+
 
 export default AuthPage;

@@ -5,10 +5,11 @@ import logo from "../../assets/genie.png";
 import { useDispatch, useSelector } from "react-redux";
 import { FiLogOut } from "react-icons/fi"; // Importing the logout icon from React Icons
 import { logoutUserAction } from "../../store/actions/userActions";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 const Header = () => {
   
-  const {user} = useSelector(store=> store.UserSlice);
+  const {user,isLoading} = useSelector(store=> store.UserSlice);
   const navigate =  useNavigate();
   const dispatch =  useDispatch();
   const handleLogout = () => {
@@ -48,14 +49,20 @@ const Header = () => {
             {user &&
               <div className="flex gap-4">
                 <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gradient-to-r from-amber-700 to-yellow-500 overflow-hidden">
-                  {user.name.substring(0,1)}
+                  {user?.name?.substring(0,1)}
                 </div>
+                <div className="relative group">
+
                 <button
-                  className="border-0 backdrop-blur-2xl bg-white/[.11] cursor-pointer duration-150 hover:text-rose-400 font-black text-xs px-4 py-2 rounded-lg"
+                  className="border-0 backdrop-blur-2xl bg-white/[.11] cursor-pointer duration-150 hover:text-rose-400 font-black text-xs px-4 py-3 rounded-lg"
                   onClick={handleLogout}
-                >
-                  <FiLogOut className="text-sm font-black"  /> 
+                  >
+                 {isLoading ? <LoadingIndicator/> : <FiLogOut className="text-sm font-black"  /> }
                 </button>
+                <span className={`absolute -translate-x-[0%] top-full left-[20%] -translate-y-[30%] pointer-events-none z-[99] bg-neutral-700/[.7] group-hover:opacity-100 opacity-0 px-2 text-xs rounded pb-1 transition-opacity duration-300`}>
+            Logout
+          </span>
+                  </div>
               </div>
             }
           </div>

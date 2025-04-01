@@ -52,19 +52,6 @@ const RecipeCard = ({ recipe,index }) => {
       </div>
       <h2 className="text-2xl font-bold mb-1 text-center">{recipe.title.length > 25 ? `${recipe.title.substring(0, 40)}...` : recipe.title}</h2>
       <p className="text-neutral-400 mb-6 ">Cuisine: <span className="text-yellow-500"> {recipe.cuisine.length > 10 ? `${recipe.cuisine.substring(0, 10)}...` : recipe.cuisine}</span></p>
-      {/* {recipe.preferences.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2 mb-2">
-          <strong className="text-neutral-400 text-sm">Preferences:</strong>
-          {recipe.preferences.slice(0, 3).map((preference, index) => (
-            <span
-              key={index}
-              className="bg-neutral-800/[.7] cursor-default text-neutral-200 text-xs font-bold py-1 px-2 rounded-full border border-neutral-700"
-            >
-              {preference}
-            </span>
-          ))}
-        </div>
-      )} */}
 
       <div className="relative flex gap-2 items-center justify-self-end mt-auto">
       <SaveBtn recipe={recipe} status={true} position={"relative"}/>
@@ -82,7 +69,7 @@ const SavedRecipesPage = () => {
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    if(recipes?.length === 0) dispatch(getSavedRecipesAction())
+    if(recipes?.length <2) dispatch(getSavedRecipesAction())
   },[dispatch])
 
 
@@ -93,12 +80,12 @@ const SavedRecipesPage = () => {
       <div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rounded-xl bg-neutral-600/[0] text-white"
         >
-         {recipes.map((recipe, index) => (
+         {[...recipes].reverse().map((recipe, index) => (
           <RecipeCard key={recipe._id} recipe={recipe} index={index} />
         ))}
       </div>
     </div>
-    : <Loading/>
+    : <div className="flex items-center justify-center flex-col gap-4 h-[60vh] "> <img src="https://i.gifer.com/42xT.gif" alt="" /> <h2 className="text-white font-black tracking-wide backdrop-blur-xs px-2">No recipe found</h2></div>
   );
 };
 

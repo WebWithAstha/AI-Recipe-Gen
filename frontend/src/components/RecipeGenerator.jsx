@@ -4,6 +4,7 @@ import { FormField } from "./partials/FormField";
 import { useDispatch, useSelector } from "react-redux";
 import { generateAction } from "../store/actions/recipeActions";
 import toast from "react-hot-toast";
+import { LoadingIndicator } from "./partials/LoadingIndicator";
 
 const RecipeGenerator = ({formState,setFormState}) => {
  
@@ -53,16 +54,10 @@ const RecipeGenerator = ({formState,setFormState}) => {
           required={true}
 
         />
-        <Btn text={isLoading ? <LoadingIndicator /> : "Generate Recipe"} disabled={isLoading  } />
+        <Btn text={isLoading ? <LoadingIndicator /> : "Generate Recipe"} disabled={isLoading} />
       </form>
     </div>
   );
 };
-
-const LoadingIndicator = () => (
-  <div className="flex justify-center">
-    <div className="animate-spin h-5 w-5 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-  </div>
-);
 
 export default RecipeGenerator;
